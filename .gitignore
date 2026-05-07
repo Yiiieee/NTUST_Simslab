@@ -13,6 +13,10 @@
 **.txt
 **.zip
 
+忽略資料夾
+
+**/weights/**
+
 # 忽略 Python 暫存與環境
 __pycache__/
 venv/
