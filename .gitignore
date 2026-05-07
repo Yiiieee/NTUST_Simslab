@@ -1,0 +1,22 @@
+# 忽略模型權重檔
+**.pth
+**.onnx
+
+
+# 忽略影片與圖片資料
+**.mp4
+**.avi
+**.png
+**.jpg
+**.csv
+**.gif
+**.txt
+**.zip
+
+# 忽略 Python 暫存與環境
+__pycache__/
+venv/
+.env
+
+# 忽略測試結果輸出
+test_results_*.txt
