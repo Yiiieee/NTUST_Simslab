@@ -17,11 +17,15 @@ import shutil
 import sys
 import cv2
 from enum import Enum
-
 from collections import Counter
-import matplotlib.pyplot as plt
-import numpy as np
 
+# --- 【關鍵修改】防當機的背景繪圖設定，順序必須長這樣 ---
+import matplotlib
+matplotlib.use('Agg')
+import matplotlib.pyplot as plt
+# ----------------------------------------------------
+
+import numpy as np
 
 class MethodAveragePrecision(Enum):
     """
@@ -836,6 +840,7 @@ def getBoundingBoxes(directory,
         allClasses = []
         
     # Read ground truths
+    current_pwd = os.getcwd()
     os.chdir(directory)
     # --- 這裡已經幫你修改好了！可以遞迴讀取子資料夾 ---
     files = glob.glob("**/*.txt", recursive=True)
