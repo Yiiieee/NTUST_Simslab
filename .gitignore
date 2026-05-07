@@ -1,17 +1,17 @@
 # 忽略模型權重檔
-**.pth
-**.onnx
+*.pth
+*.onnx
 
 
 # 忽略影片與圖片資料
-**.mp4
-**.avi
-**.png
-**.jpg
-**.csv
-**.gif
-**.txt
-**.zip
+*.mp4
+*.avi
+*.png
+*.jpg
+*.csv
+*.gif
+*.txt
+*.zip
 
 忽略資料夾
 

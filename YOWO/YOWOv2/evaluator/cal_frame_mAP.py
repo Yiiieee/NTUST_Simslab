@@ -1,13 +1,13 @@
 ###########################################################################################
 #                                                                                         #
 # This sample shows how to evaluate object detections applying the following metrics:     #
-#  * Precision x Recall curve       ---->       used by VOC PASCAL 2012)                  #
-#  * Average Precision (AP)         ---->       used by VOC PASCAL 2012)                  #
+#  * Precision x Recall curve        ---->        used by VOC PASCAL 2012)                #
+#  * Average Precision (AP)          ---->        used by VOC PASCAL 2012)                #
 #                                                                                         #
 # Developed by: Rafael Padilla (rafael.padilla@smt.ufrj.br)                               #
 #        SMT - Signal Multimedia and Telecommunications Lab                               #
 #        COPPE - Universidade Federal do Rio de Janeiro                                   #
-#        Last modification: Oct 9th 2018                                                 #
+#        Last modification: Oct 9th 2018                                                  #
 ###########################################################################################
 
 import argparse
@@ -383,7 +383,7 @@ class BoundingBoxes:
 # Developed by: Rafael Padilla (rafael.padilla@smt.ufrj.br)                               #
 #        SMT - Signal Multimedia and Telecommunications Lab                               #
 #        COPPE - Universidade Federal do Rio de Janeiro                                   #
-#        Last modification: Oct 9th 2018                                                 #
+#        Last modification: Oct 9th 2018                                                  #
 ###########################################################################################
 
 
@@ -834,20 +834,17 @@ def getBoundingBoxes(directory,
         allBoundingBoxes = BoundingBoxes()
     if allClasses is None:
         allClasses = []
+        
     # Read ground truths
     os.chdir(directory)
-    files = glob.glob("*.txt")
+    # --- 這裡已經幫你修改好了！可以遞迴讀取子資料夾 ---
+    files = glob.glob("**/*.txt", recursive=True)
     files.sort()
-    # print(files)
+    
     # Read GT detections from txt file
-    # Each line of the files in the groundtruths folder represents a ground truth bounding box
-    # (bounding boxes that a detector should detect)
-    # Each value of each line is  "class_id, x, y, width, height" respectively
-    # Class_id represents the class of the bounding box
-    # x, y represents the most top-left coordinates of the bounding box
-    # x2, y2 represents the most bottom-right coordinates of the bounding box
     for f in files:
-        nameOfImage = f.replace(".txt", "")
+        # --- 這裡已經幫你修改好了！只保留檔案名稱以供比對 ---
+        nameOfImage = os.path.basename(f).replace(".txt", "")
         fh1 = open(f, "r")
         for line in fh1:
             line = line.replace("\n", "")
@@ -924,24 +921,6 @@ def evaluate_frameAP(gtFolder, detFolder, threshold = 0.5, savePath = None, data
     detCoordType = ValidateCoordinatesTypes(detCoordinates, '-detCoordinates', errors)
     imgSize = (0, 0)
 
-    # # Create directory to save results
-    # shutil.rmtree(savePath, ignore_errors=True)  # Clear folder
-    # exit()
-    # if savePath is not None:
-    #     os.makedirs(savePath)
-    # Show plot during execution
-    # showPlot = args.showPlot
-
-    # print('iouThreshold= %f' % iouThreshold)
-    # #print('savePath = %s' % savePath)
-    # print('gtFormat = %s' % gtFormat)
-    # print('detFormat = %s' % detFormat)
-    # print('gtFolder = %s' % gtFolder)
-    # print('detFolder = %s' % detFolder)
-    # print('gtCoordType = %s' % gtCoordType)
-    # print('detCoordType = %s' % detCoordType)
-    #print('showPlot %s' % showPlot)
-
     # Get groundtruth boxes
     allBoundingBoxes, allClasses = getBoundingBoxes(
         gtFolder, True, gtFormat, gtCoordType, imgSize=imgSize)
@@ -964,11 +943,6 @@ def evaluate_frameAP(gtFolder, detFolder, threshold = 0.5, savePath = None, data
         savePath=savePath,
         showGraphic=False)
 
-    # f = open(os.path.join(savePath, 'results.txt'), 'w')
-    # f.write('Object Detection Metrics\n')
-    # f.write('https://github.com/rafaelpadilla/Object-Detection-Metrics\n\n\n')
-    # f.write('Average Precision (AP), Precision and Recall per class:')
-
     # each detection is a class and store AP and mAP results in AP_res list
     AP_res = []
     for metricsPerClass in detections:
@@ -988,18 +962,17 @@ def evaluate_frameAP(gtFolder, detFolder, threshold = 0.5, savePath = None, data
             prec = ['%.2f' % p for p in precision]
             rec = ['%.2f' % r for r in recall]
             ap_str = "{0:.2f}%".format(ap * 100)
-            # ap_str = "{0:.4f}%".format(ap * 100)
-            #print('AP: %s (%s)' % (ap_str, cl))
-            # f.write('\n\nClass: %s' % cl)
-            # f.write('\nAP: %s' % ap_str)
-            # f.write('\nPrecision: %s' % prec)
-            # f.write('\nRecall: %s' % rec)
             AP_res.append('AP: %s (%s)' % (ap_str, cl))
-    mAP = acc_AP / validClasses
+    
+    # 這裡加入防呆機制，避免萬一真的沒有資料時又跳錯
+    if validClasses == 0:
+        print("\n[警告] 未偵測到任何有效的標註檔案，無法計算 mAP。請確認標註檔路徑是否正確。\n")
+        mAP = 0.0
+    else:
+        mAP = acc_AP / validClasses
+        
     mAP_str = "{0:.2f}%".format(mAP * 100)
-    #print('mAP: %s' % mAP_str)
     AP_res.append('mAP: %s' % mAP_str)
-    # f.write('\n\n\nmAP: %s' % mAP_str)
 
     return AP_res
 
