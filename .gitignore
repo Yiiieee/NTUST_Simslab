@@ -16,6 +16,7 @@
 忽略資料夾
 
 **/weights/**
+**/results/**
 
 忽略 Python 暫存與環境
 __pycache__/

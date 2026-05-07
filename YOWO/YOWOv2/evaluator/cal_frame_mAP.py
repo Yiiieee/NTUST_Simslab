@@ -899,9 +899,9 @@ def getBoundingBoxes(directory,
 def evaluate_frameAP(gtFolder, detFolder, threshold = 0.5, savePath = None, datatset = 'ucf24', show_pr_curve=False):
     # Get current path to set default folders
     #VERSION = '0.1 (beta)'
-    gtFormat = 'xyrb'
+    gtFormat = 'xywh'     # <--- 修改 1：告訴老師，你的標註檔是中心點(xy)與寬高(wh)
     detFormat = 'xyrb'
-    gtCoordinates = 'abs'
+    gtCoordinates = 'rel' # <--- 修改 2：告訴老師，你的座標是 0~1 的相對比例 (relative)
     detCoordinates = 'abs'
 
     gtFolder = os.path.join(os.path.abspath('.'), gtFolder)
@@ -919,7 +919,7 @@ def evaluate_frameAP(gtFolder, detFolder, threshold = 0.5, savePath = None, data
     # Coordinates types
     gtCoordType = ValidateCoordinatesTypes(gtCoordinates, '-gtCoordinates', errors)
     detCoordType = ValidateCoordinatesTypes(detCoordinates, '-detCoordinates', errors)
-    imgSize = (0, 0)
+    imgSize = (224, 224)  # <--- 修改 3：給老師一把尺，讓他把 0~1 的小數點放大回 224 像素的真實大小
 
     # Get groundtruth boxes
     allBoundingBoxes, allClasses = getBoundingBoxes(
