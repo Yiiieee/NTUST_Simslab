@@ -18,6 +18,12 @@
 **/weights/**
 **/results/**
 
+# 忽略所有的 YAML 紀錄檔 
+args.yaml
+state.json
+ricky_env2.yml
+
+
 忽略 Python 暫存與環境
 __pycache__/
 venv/
