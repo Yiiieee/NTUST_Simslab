@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 name: env_ricky2
 channels:
   - defaults
@@ -18,3 +19,25 @@ dependencies:
       - pyqtgraph==0.13.3
       - sysmon==1.0.1
       - werkzeug==3.1.3
+=======
+name: env_ricky2
+channels:
+  - defaults
+dependencies:
+  - python=3.11
+  - pip
+  - numpy=1.26.3
+  - pip:
+      - blinker==1.9.0
+      - click==8.1.8
+      - flask==3.1.0
+      - itsdangerous==2.2.0
+      - jinja2==3.1.6
+      - markupsafe==3.0.2
+      - pyqt5==5.15.10
+      - pyqt5-qt5==5.15.2
+      - pyqt5-sip==12.13.0
+      - pyqtgraph==0.13.3
+      - sysmon==1.0.1
+      - werkzeug==3.1.3
+>>>>>>> 2a6bd7f1f941ef825654fcd4c38b276dd00248b6
